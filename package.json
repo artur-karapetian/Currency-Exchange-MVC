@@ -1,0 +1,39 @@
+{
+  "name": "i-am-artur",
+  "description": "My website in JS with routing",
+  "author": "Artur Karapetian",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --open"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-decorators": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/runtime": "^7.15.3",
+    "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^1.0.0",
+    "file-loader": "^1.1.11",
+    "http-server": "^13.0.2",
+    "less": "^3.8.0",
+    "less-loader": "^4.1.0",
+    "mini-css-extract-plugin": "^0.4.1",
+    "prettier": "^2.3.2",
+    "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.16.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  },
+  "version": "1.0.0",
+  "main": "webpack.config.js",
+  "license": "ISC",
+  "dependencies": {
+    "core-js": "^3.16.1",
+    "normalize.less": "^1.0.0"
+  }
+}

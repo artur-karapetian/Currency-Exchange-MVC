@@ -1,0 +1,12 @@
+// ~ at the beginning of path is used to enable webpack file revolver mechanism. Allows to use webpack aliases
+
+/* example of using mixins */
+@import (reference) "~@less-helpers-module/_variables";
+@import (reference) "~@less-helpers-module/_mixins.less"; // ~@less-helpers-module - is a path to less helpers folder
+
+.footer {
+  &:extend(.page-prop);
+  text-align: center;
+  color: #7a7a7a;
+  background-color: #181818;
+}

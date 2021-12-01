@@ -1,0 +1,29 @@
+@font-size: 16;
+@rem: @font-size*1rem;
+
+//.OnTablet(@rules) {
+//  @media screen and (min-width: 480px) {
+//    @rules();
+//  }
+//}
+
+@min-desktop-width: 775px;
+
+.OnMedium(@rules) {
+  @media screen and (min-width: 360px) {
+    @rules();
+  }
+}
+
+.OnTablet(@rules) {
+  @media screen and (min-width: 480px) {
+    @rules();
+  }
+}
+
+.OnDesktop(@rules) {
+  @media screen and (min-width: @min-desktop-width) {
+    @rules();
+  }
+}
+

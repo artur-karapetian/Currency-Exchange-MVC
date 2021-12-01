@@ -1,0 +1,35 @@
+/* example of using mixins */
+@import (reference) "../helpers/_variables";
+@import (reference) "../helpers/_mixins.less"; // ~@less-helpers-module - is a path to less helpers folder
+
+
+html {
+  font-family: Montserrat, Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #4e4e4e;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  margin: 0;
+  font-size: 18 / @rem;
+  //background: @background-color;
+  background: white;
+}
+
+& input,
+select,
+textarea {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+  font-size: 17 / @rem;
+}
+

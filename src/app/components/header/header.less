@@ -1,0 +1,106 @@
+// ~ at the beginning of path is used to enable webpack file revolver mechanism. Allows to use webpack aliases
+
+/* example of using mixins */
+@import (reference) "~@less-helpers-module/_variables";
+@import (reference) "~@less-helpers-module/_mixins.less"; // ~@less-helpers-module - is a path to less helpers folder
+
+
+.header {
+  &:extend(.page-prop);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14 / @rem;
+  font-weight: 800;
+  background-color: @header-background;
+
+  &__mobile-options {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.logo {
+  display: flex;
+  color: #ffcc00;
+  align-items: center;
+
+  &__image {
+    margin-right: 10px;
+    width: 100px;
+    background-color: #FFF;
+  }
+}
+
+.burger-menu {
+  display: block;
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 2px;
+  background-color: blue;
+  cursor: pointer;
+
+  .OnDesktop({
+    display: none;
+  });
+
+  &:before {
+    content: "\2630";
+    font-size: 18px;
+    color: #fff;
+  }
+
+  &:active {
+    background-color: darkblue;
+  }
+}
+
+.nav {
+  width: 100%;
+
+  &__list {
+    padding-left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    list-style-type: none;
+
+    .OnTablet({
+      justify-content: flex-end;
+    });
+  }
+
+  &__item {
+  }
+
+  &__link {
+    color: #fff;
+
+    .OnTablet({
+      margin-left: 10px;
+    });
+
+    &_selected {
+      display: block;
+      font-weight: 700;
+      color: yellow;
+    }
+  }
+}
+
+.language-button {
+  padding: 2px 0;
+  margin: 2px 0;
+  font-size: 14 / @rem;
+  border: none;
+  color: darkorange;
+  background: none;
+  cursor: pointer;
+
+  &_selected {
+    font-weight: 900;
+  }
+}

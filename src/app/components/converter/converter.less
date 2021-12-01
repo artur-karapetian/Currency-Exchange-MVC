@@ -1,0 +1,31 @@
+// ~ at the beginning of path is used to enable webpack file revolver mechanism. Allows to use webpack aliases
+
+/* example of using mixins */
+@import (reference) "../../../assets/less/helpers/_variables";
+@import (reference) "../../../assets/less/helpers/_mixins.less";
+
+.converter:extend(.main){
+  &__convert {
+    margin-top: 25px;
+    margin-left: auto;
+    display: block;
+  }
+}
+
+.section {
+  margin-top: 10px;
+}
+
+
+& input,
+select,
+textarea {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+  font-size: 17 / @rem;
+}
+
