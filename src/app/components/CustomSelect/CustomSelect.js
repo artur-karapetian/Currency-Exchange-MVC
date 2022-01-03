@@ -1,95 +1,94 @@
 import AbstractComponent from "../AbstractComponent";
-import {
-    getElement,
-    setHtmlToNode
-} from "../../helpers/NodeUtils";
-
+import {getElement, getElementFromNode, replaceNodeWithHtml} from "../../helpers/NodeUtils";
 
 export default class CustomSelect extends AbstractComponent {
+  constructor(observer, getValue, getList, emitValueChanged) {
+    super();
+    this.observer = observer;
 
-    constructor(observer, getCurrentValue, getList, setCurrentValue) {
-        super();
-        observer.subscribe(this.update);
+    if (CustomSelect.count === undefined) CustomSelect.count = 0;
+    this.id = CustomSelect.count++;
 
-        if(CustomSelect.count===undefined) CustomSelect.count=0;
-        this.id = CustomSelect.count++;
+    this.getValue = getValue;
+    this.getList = getList;
+    this.emitValueChanged = emitValueChanged.bind(this);
 
-        this.getCurrentValue = getCurrentValue;
-        this.getList = getList;
-        this.setCurrentValue = setCurrentValue;
+    this.SavedCurrentValue = getValue();
+    this.SavedList = getList();
+    this.DOM_id = "custom-select" + this.id;
+  }
 
-        this.SavedCurrentValue = getCurrentValue();
-        this.SavedList = getList();
+  getTemplate() {
+    return `
+      <div class="custom-select" id="${ this.DOM_id }">
+        <input
+          class="custom-select__input"
+          list="${ "datalist-id" + this.id }"
+          value="${ this.SavedCurrentValue }"
+        >
+        <datalist id="${ "datalist-id" + this.id }">${this.SavedList.reduce((p, item) => p + `
+          <option value="${item}">${item}</option>`, "")}
+        </datalist>
+      </div>`;
+  }
 
+  render() {
+    //TODO: if component is error throw error or teleport to new node
+    activateMutationObserver.call(this);
+
+    return this.getTemplate();
+  }
+
+  update = ()=> {
+    if(getElement(this.DOM_id) === null) {
+      this.observer.unsubscribe(this.update);
+
+    }else if (this.SavedCurrentValue !== this.getValue() || this.SavedList !== this.getList()) {
+      this.SavedCurrentValue = this.getValue();
+      this.SavedList = this.getList();
+      replaceNodeWithHtml(getElement(this.DOM_id), this.getTemplate());
+      activateListeners.call(this);
     }
-
-    appendTo(node) {
-        //TODO: if component is attached throw error or teleport to new node
-        setHtmlToNode(node, this.render());
-    }
-
-    render() {
-        this.DOM_id = 'custom-select'+this.id;
-        activateMutationObserver.call(this);
-
-        return `
-            <div class="custom-select" id="${ this.DOM_id}">
-                <input list="${ 'datalist-id'+this.id }" class="custom-select__input" value="${ this.SavedCurrentValue }">
-
-                <datalist id="${ 'datalist-id'+this.id }">${this.SavedList.reduce((p, item) => p +
-                    `<option value="${item}">${item}</option>`, "")}
-                </datalist>
-                <button class="btn">btn</button>
-            </div>`;
-    }
-
-    update = () => {
-        let currentValueChanged = this.SavedCurrentValue !== this.getCurrentValue();
-        if(currentValueChanged) {
-            let customSelectInput = getElement('custom-select__input')
-            customSelectInput.value = this.getCurrentValue();
-        }
-    }
+  };
 }
 
-function activateListeners(customSelectNode) {
-    customSelectNode.addEventListener('change', () => {
-        let currentValueInput = getElement('custom-select__input');
-        this.setCurrentValue(currentValueInput.value);
-    });
+function activateListeners() {
+  let input = getElementFromNode("custom-select__input", getElement(this.DOM_id));
+  input.addEventListener("change", () => {
+
+    let newInputValueExistInList = this.getList().find(element => element === input.value);
+    if (newInputValueExistInList) {
+      this.SavedCurrentValue = input.value.toUpperCase();
+      this.emitValueChanged(input.value);
+
+    }else {
+      input.value = this.SavedCurrentValue;
+    }
+
+    input.blur();
+  });
+
+
+  input.addEventListener("focusin", () => {
+    input.value = "";
+  });
+
+  input.addEventListener("focusout", () => {
+    if (input.value === "") {
+      input.value = this.SavedCurrentValue;
+    }
+  });
 }
 
-function activateMutationObserver(){
-    const mutationConfig = { attributes: false, childList: true, subtree: false };
-    const observer = new MutationObserver(()=>{
-        let customSelectNode = getElement(this.DOM_id);
-        if(customSelectNode) {
-            activateListeners.call(this, customSelectNode);
-            observer.disconnect();
-        }
-    });
-    observer.observe(document.body, mutationConfig);
+function activateMutationObserver() {
+  const mutationConfig = { attributes: false, childList: true, subtree: true };
+  const mutationObserver = new MutationObserver(() => {
+    let customSelectNode = getElement(this.DOM_id);
+    if (customSelectNode) {
+      this.observer.subscribe(this.update);
+      this.update();
+      mutationObserver.disconnect();
+    }
+  });
+  mutationObserver.observe(document.body, mutationConfig);
 }
-
-// activateListeners() {
-// let secondCurrency = getElementFromNode(this.documentFragment, this.classCustomSelect__input);
-// console.log(secondCurrency)
-// secondCurrency.addEventListener("change", () => {
-//     // this.model.setSecondCurrency(secondCurrency.value);
-//     console.log(this.eventBus.events.setSecondCurrencyName);
-//     console.log(secondCurrency.value);
-//     this.eventBus.publish(this.eventBus.events.setSecondCurrencyName, secondCurrency.value);
-//     console.log(this.model)
-//
-//     secondCurrency.blur();
-//
-// });
-//
-// secondCurrency.addEventListener("click", () => {
-//     secondCurrency.value = "";
-// });
-//
-// secondCurrency.addEventListener("focus", () => {
-//     secondCurrency.value = "";
-// });
-// }

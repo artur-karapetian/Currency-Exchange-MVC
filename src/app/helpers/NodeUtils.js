@@ -1,8 +1,8 @@
 export function getElement(ClassName_Or_Id){
-    return getElementFromNode(document, ClassName_Or_Id);
+    return getElementFromNode(ClassName_Or_Id, document);
 }
 
-export function getElementFromNode(Node, ClassName_Or_Id){
+export function getElementFromNode(ClassName_Or_Id, Node){
     let searchedNode = ClassName_Or_Id;
 
     if(typeof searchedNode === 'string') {
@@ -37,6 +37,16 @@ export function createDocFragment(html) {
     return range.createContextualFragment(html);
 }
 
+export function replaceNodeWithHtml(node, html) {
+    let docFragment = createDocFragment(html);
+
+    return replaceNode(node, docFragment);
+}
+
+export function appendElementToNode(Element, Node){
+    getElement(Node).appendChild(Element);
+}
+
 function replaceNode(oldNode, newNode) {
     let nodeToReplace = getElement(oldNode);
 
@@ -48,14 +58,4 @@ function replaceNode(oldNode, newNode) {
     }
 
     return false;
-}
-
-export function replaceNodeWithHtml(node, html) {
-    let docFragment = createDocFragment(html);
-
-    return replaceNode(node, docFragment);
-}
-
-export function appendElementToNode(Element, Node){
-    getElement(Node).appendChild(Element);
 }

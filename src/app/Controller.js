@@ -1,7 +1,6 @@
-import {eventBus} from "./EventBus";
-import Converter from "./components/converter/Converter";
+import EventBus from "./EventBus";
 
-let events = {
+const events = {
   setBaseCurrencyName: "setBaseCurrencyName",
   setSecondCurrencyName: "setSecondCurrencyName",
 };
@@ -10,14 +9,11 @@ export default class Controller {
 
   constructor(model) {
     this.model = model;
+    this.eventBus = new EventBus();
 
-    eventBus.events = events;
-    eventBus.subscribe(events.setBaseCurrencyName, this.model.setBaseCurrencyName);
-
-    let converter = new Converter(model, eventBus);
-    converter.appendTo('main');
-
-    // setHtmlToNode('main', converter.render());
+    this.eventBus.events = events;
+    this.eventBus.subscribe(events.setBaseCurrencyName, this.model.setBaseCurrencyName);
+    this.eventBus.subscribe(events.setSecondCurrencyName, this.model.setSecondCurrencyName);
   }
 }
 

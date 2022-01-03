@@ -1,5 +1,5 @@
 
-class EventBus {
+export default class EventBus {
     constructor() {
         this.eventCallbacksPairs = [];
     }
@@ -22,7 +22,9 @@ class EventBus {
             return;
         }
 
-        eventCallbacksPair.callbacks.forEach(callback => callback(args));
+        eventCallbacksPair.callbacks.forEach(callback => {
+            return callback(args)
+        });
     }
 
     findEventCallbacksPair(eventType) {
@@ -37,4 +39,3 @@ class EventCallbacksPair {
     }
 }
 
-export const eventBus = new EventBus();
