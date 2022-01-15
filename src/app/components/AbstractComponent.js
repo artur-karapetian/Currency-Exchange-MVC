@@ -6,10 +6,4 @@ export default class AbstractComponent {
       throw new Error("Abstract classes can't be instantiated.");
     }
   }
-
-  render() {
-  }
-
-  update = () => {
-  };
 }

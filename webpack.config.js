@@ -63,10 +63,6 @@ module.exports = {
         from: "src/assets/images",
         to: "images",
       },
-      // {
-      //   from: "src/assets/data",
-      //   to: "data",
-      // },
     ]),
   ],
   optimization: {
